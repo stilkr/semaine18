@@ -1,0 +1,57 @@
+h1 = @app.name
+
+= url_for new_app_device_url(@app, key: @app.token)
+
+ul
+    li    <strong>platform</strong> iOS
+    li    <strong>version</strong> 7.1
+    li    <strong>uuid</strong> XXX-XXX-XXX
+    li    <strong>model</strong> iPad3, 4
+    li    <strong>token</strong>
+    
+.row
+    .col-sm-6
+    
+table.table
+    thead
+        tr
+            th Nom
+            th Flux
+            th Dernier push
+            th Actions
+            
+    tbody
+    - @app.feeds.find_each do |feed|
+        tr
+            td = feed.name
+            td = feed.url
+            td = "Il y a #{time_ago_in_words feed.push.update}"
+           
+            td
+                = link_to "Editer", edit_app_feed_path(@app, feed), class: "btn btn-warning"
+                = link_to "Supprimer", [@app, feed], method: :delete, class: "btn btn-danger"
+                
+p = link_to "Ajouter un flux", new_app_feed_path(@app), class: "btn btn-primary"
+       
+
+table.table
+    thead
+        tr
+            th Platform
+            th Version
+            th Model
+            th Actions
+            
+    tbody
+    - @devices.page(params[:page])find_each do |device|
+        tr
+            td = device.platform
+            td = device.version
+            td = device.model
+           
+            td
+                = link_to "Tester", [@app, device], class: "btn btn-primary"
+                = link_to "Supprimer", [@app, device], method: :delete, class: "btn btn-danger"
+                
+
+=paginate @devices            

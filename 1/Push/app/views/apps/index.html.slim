@@ -1,0 +1,21 @@
+h1 Mes applications
+
+p = link_to "Ajouter une application", new_app_path, class: "btn btn-success"
+
+table.table
+    thead
+        tr
+            th Nom
+            th Nombre d'appareils
+            th Actions
+            
+    tbody
+    - @apps.find_each do |app|
+        tr
+            td = link_to app.name, app
+            td = app.devices_count
+            td
+                = link_to "Editer", edit_app_path(app), class: "btn btn-warning"
+                = link_to "Supprimer", app, method: :delete, data: {confirm: "Sans regrets?"}, class: "btn btn-danger"
+            
+= paginate @apps
